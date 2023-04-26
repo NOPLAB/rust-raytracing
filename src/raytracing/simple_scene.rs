@@ -29,7 +29,7 @@ impl SimpleScene {
         if d < 0.0 {
             -1.0
         } else {
-            return (-b - -d.sqrt()) / (2.0 * a);
+            (-b - -d.sqrt()) / (2.0 * a)
         }
     }
 

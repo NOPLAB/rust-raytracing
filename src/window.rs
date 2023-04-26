@@ -3,20 +3,16 @@ use std::{thread, vec};
 use image::RgbImage;
 use minifb::{Key, KeyRepeat, Window, WindowOptions};
 
-struct Draw {
+pub struct Draw {
     window_image: Vec<u32>,
 }
 
 impl Draw {
-    fn new(window_image: RgbImage) -> Self {
-        let obj = Self {
+    pub fn new() -> Self {
+        Self {
             window_image: Vec::new(),
-        };
-        obj.setup_window(window_image);
-        obj
+        }
     }
-
-    pub fn image_update(&self) {}
 
     fn window_update(
         &self,
@@ -28,7 +24,7 @@ impl Draw {
         // Dキーが押されたら
         if window.is_key_pressed(Key::D, KeyRepeat::No) {}
 
-        window.update_with_buffer(&window_buffer, image_width, image_height)?;
+        window.update_with_buffer(window_buffer, image_width, image_height)?;
 
         Ok(())
     }
@@ -62,16 +58,14 @@ impl Draw {
             *buffer = u32::from_be_bytes([0, pixel[0], pixel[1], pixel[2]]);
         }
 
-        thread::spawn(move || {
-            while window.is_open() && !window.is_key_down(Key::Escape) {
-                self.window_update(
-                    &mut window,
-                    &mut window_buffer,
-                    image_width as usize,
-                    image_height as usize,
-                )?;
-            }
-        });
+        while window.is_open() && !window.is_key_down(Key::Escape) {
+            self.window_update(
+                &mut window,
+                &mut window_buffer,
+                image_width as usize,
+                image_height as usize,
+            )?;
+        }
 
         Ok(())
     }

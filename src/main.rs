@@ -6,7 +6,7 @@ use crate::{
         render::{render, Scene},
         simple_scene::SimpleScene,
     },
-    window::setup_window,
+    window::Draw,
 };
 
 // const IMAGE_WIDTH: u32 = 200;
@@ -41,5 +41,7 @@ fn main() {
     let img = render(SimpleScene::new());
 
     img.save(String::from("render.png")).unwrap();
-    setup_window(img).unwrap();
+
+    let drawer = Draw::new();
+    drawer.setup_window(img).unwrap();
 }
