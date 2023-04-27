@@ -4,7 +4,7 @@ use super::{
     Point3,
 };
 
-pub trait Shape: Sync {
+pub trait Shape: Sync + Send {
     fn hit(&self, ray: &Ray, t0: f64, t1: f64) -> Option<HitInfo>;
 }
 

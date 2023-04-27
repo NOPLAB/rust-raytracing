@@ -1,3 +1,5 @@
+// Unused
+
 use crate::{Color, IMAGE_HEIGHT, IMAGE_WIDTH};
 use std::{fs::File, io::prelude::*};
 

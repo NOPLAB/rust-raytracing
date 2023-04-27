@@ -1,9 +1,14 @@
 mod raytracing;
 mod window;
 
+use std::{
+    sync::{mpsc::channel, Arc, Mutex},
+    thread,
+};
+
 use crate::{
     raytracing::{
-        render::{render, Scene},
+        render::{render, render_async, Scene, IMAGE_HEIGHT, IMAGE_WIDTH},
         simple_scene::SimpleScene,
     },
     window::Draw,
@@ -38,10 +43,18 @@ use crate::{
 fn main() {
     println!("Hello! Ray tracing world!");
 
-    let img = render(SimpleScene::new());
+    // let img = render(SimpleScene::new());
 
-    img.save(String::from("render.png")).unwrap();
+    let (tx, rx) = channel();
+
+    let scene = SimpleScene::new();
+
+    let output = render_async(scene, Arc::new(Mutex::new(tx)));
+
+    // rx.recv().unwrap().save(String::from("render.png")).unwrap();
 
     let drawer = Draw::new();
-    drawer.setup_window(img).unwrap();
+    drawer
+        .setup_async_window(rx, IMAGE_WIDTH as usize, IMAGE_HEIGHT as usize)
+        .unwrap();
 }
